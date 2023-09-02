@@ -1,0 +1,5 @@
+numpy
+pyserial
+adafruit-pca9685
+adafruit-servokit
+adafruit-blinka
