@@ -73,13 +73,15 @@ class arm:
             self.motorKit.servo[self.motorMatrix[3, motorNumber]].angle = i 
 
         print(finalRealAngle)
-        
+        self.motorKit.servo[self.motorMatrix[3, motorNumber]].angle = finalRealAngle
+        time.sleep(.1)
+        self.motorKit.servo[self.motorMatrix[3, motorNumber]].angle = finalRealAngle
         self.motorMatrix[2, motorNumber] = finalRealAngle
         time.sleep(.5)
 
     
 topLeftArm = arm(3, 4, 5, kit)
-topLeftArm.calibrateArm(98, 0, 170,1)
+topLeftArm.calibrateArm(98, 0, 175,1)
 
 topRightArm = arm(12, 11, 10, kit)
 topRightArm.calibrateArm(12, 167, 30, -1)
@@ -117,14 +119,107 @@ def AllMotorTest():
 
 # Assuming topLeftArm is already defined
 
+thread1 = threading.Thread(target=topLeftArm.moveMotor, args=(0, 10))
+thread2 = threading.Thread(target=topRightArm.moveMotor, args=(0, 10))
+thread3 = threading.Thread(target=bottomRightArm.moveMotor, args=(0, 10))
+thread4 = threading.Thread(target=bottomLeftArm.moveMotor, args=(0, 10))
+
+thread1.start()
+thread2.start()
+thread3.start()
+thread4.start()
+
+thread1.join()
+thread2.join()
+thread3.join()
+thread4.join()
+
 # Create threads
 thread1 = threading.Thread(target=topLeftArm.moveMotor, args=(1, -40))
 thread2 = threading.Thread(target=topLeftArm.moveMotor, args=(2, 180))
 
+thread3 = threading.Thread(target=topRightArm.moveMotor, args=(1, -40))
+thread4 = threading.Thread(target=topRightArm.moveMotor, args=(2, 180))
+
+thread5 = threading.Thread(target=bottomRightArm.moveMotor, args=(1, -40))
+thread6 = threading.Thread(target=bottomRightArm.moveMotor, args=(2, 180))
+
+thread7 = threading.Thread(target=bottomLeftArm.moveMotor, args=(1, -40))
+thread8 = threading.Thread(target=bottomLeftArm.moveMotor, args=(2, 180))
+
 # Start threads
+
+thread5.start()
+thread6.start()
+thread7.start()
+thread8.start()
 thread1.start()
 thread2.start()
+thread3.start()
+thread4.start()
+
+
 
 # Wait for both threads to complete
 thread1.join()
 thread2.join()
+thread3.join()
+thread4.join()
+thread5.join()
+thread6.join()
+thread7.join()
+thread8.join()
+
+time.sleep(4)
+thread1 = threading.Thread(target=topLeftArm.moveMotor, args=(1, 90))
+thread2 = threading.Thread(target=topLeftArm.moveMotor, args=(2, 90))
+
+thread3 = threading.Thread(target=topRightArm.moveMotor, args=(1, 90))
+thread4 = threading.Thread(target=topRightArm.moveMotor, args=(2, 90))
+
+thread5 = threading.Thread(target=bottomRightArm.moveMotor, args=(1, 90))
+thread6 = threading.Thread(target=bottomRightArm.moveMotor, args=(2, 90))
+
+thread7 = threading.Thread(target=bottomLeftArm.moveMotor, args=(1, 90))
+thread8 = threading.Thread(target=bottomLeftArm.moveMotor, args=(2, 90))
+
+# Start threads
+
+thread5.start()
+thread6.start()
+thread7.start()
+thread8.start()
+
+time.sleep(.5)
+thread1.start()
+thread2.start()
+thread3.start()
+thread4.start()
+
+# Wait for both threads to complete
+thread1.join()
+thread2.join()
+thread3.join()
+thread4.join()
+thread5.join()
+thread6.join()
+thread7.join()
+thread8.join()
+
+
+
+
+thread1 = threading.Thread(target=topLeftArm.moveMotor, args=(0, 0))
+thread2 = threading.Thread(target=topRightArm.moveMotor, args=(0, 0))
+thread3 = threading.Thread(target=bottomRightArm.moveMotor, args=(0, 0))
+thread4 = threading.Thread(target=bottomLeftArm.moveMotor, args=(0, 0))
+
+thread1.start()
+thread2.start()
+thread3.start()
+thread4.start()
+
+thread1.join()
+thread2.join()
+thread3.join()
+thread4.join()
