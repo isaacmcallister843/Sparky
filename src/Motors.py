@@ -6,6 +6,7 @@ from adafruit_servokit import ServoKit
 import time 
 import threading
 from typing import Dict
+import numpy as np 
 
 # Control dictionary for the motors
 class MotorData:
@@ -85,19 +86,14 @@ class arm:
         self.motorMatrix[2, motorNumber] = finalRealAngle
         time.sleep(.5)
 
-    def moveSync(self, motor_data: Dict[int, MotorData]):
+    def generateSyncThreads(self, motor_data: Dict[int, MotorData]):
             threads = []
 
             for key, value in motor_data.items():
                 newThread = threading.Thread(target=self.moveMotor, args=(key, value.target_angle, value.motor_speed))
                 threads.append(newThread)
             
-            # Use thread pools in the future this is a dumb way to handle this 
-            for thread in threads:
-                thread.start()
-            
-            for thread in threads:
-                thread.join()
+            return threads
 
 
 class SparkySkeleton():
