@@ -5,6 +5,7 @@
 # ================== STANDARD LIBRARY IMPORTS ==================
 import time
 import threading
+import keyboard # not in req just for testing
 
 # ================== THIRD-PARTY LIBRARY IMPORTS ==================
 import board
@@ -121,47 +122,43 @@ all_threads.append(bottomLeftArm.generateSyncThreads(motor_data))
 
 threadProccessing(all_threads)
 
-
-time.sleep(3)
-
-motor_data_step = {
-    1: MotorData(motor_speed=0.02, target_angle=40),
-    2: MotorData(motor_speed=0.02, target_angle=80)
-}
-
-motor_data_back_step = {
-    1: MotorData(motor_speed=0.02, target_angle=-70),
-    2: MotorData(motor_speed=0.02, target_angle=180)
-}
-
-motor_data_back_step_2 = {
-    1: MotorData(motor_speed=0.02, target_angle=-20),
-    2: MotorData(motor_speed=0.02, target_angle=90)
-}
-
-all_threads = []
-all_threads.append(topRightArm.generateSyncThreads(motor_data_step))
-all_threads.append(bottomLeftArm.generateSyncThreads(motor_data_step))
-all_threads.append(bottomRightArm.generateSyncThreads(motor_data_back_step))
-all_threads.append(topLeftArm.generateSyncThreads(motor_data_back_step_2))
-
-threadProccessing(all_threads)
-
+# One leg up 
+input("Press Enter to continue...")
 
 motor_data = {
-    1: MotorData(motor_speed=0.02, target_angle=-40),
-    2: MotorData(motor_speed=0.02, target_angle=180)
+    1: MotorData(motor_speed=0.02, target_angle=-18),
+    2: MotorData(motor_speed=0.02, target_angle=212)
 }
-
 all_threads = []
 all_threads.append(topLeftArm.generateSyncThreads(motor_data))
-all_threads.append(topRightArm.generateSyncThreads(motor_data))
-all_threads.append(bottomRightArm.generateSyncThreads(motor_data))
-all_threads.append(bottomLeftArm.generateSyncThreads(motor_data))
-
 threadProccessing(all_threads)
 
-time.sleep(2)
+# Move forward again 
+input("Press Enter to continue...")
+
+motor_data = {
+    1: MotorData(motor_speed=0.02, target_angle=-15),
+    2: MotorData(motor_speed=0.02, target_angle=170)
+}
+all_threads = []
+all_threads.append(topLeftArm.generateSyncThreads(motor_data))
+threadProccessing(all_threads)
+
+# Leg down 
+input("Press Enter to continue...")
+
+motor_data = {
+    1: MotorData(motor_speed=0.02, target_angle=25),
+    2: MotorData(motor_speed=0.02, target_angle=110)
+}
+all_threads = []
+all_threads.append(topLeftArm.generateSyncThreads(motor_data))
+threadProccessing(all_threads)
+
+
+#Sitdown 
+
+input("Press Enter to continue...")
 
 motor_data = {
     1: MotorData(motor_speed=0.02, target_angle=90),

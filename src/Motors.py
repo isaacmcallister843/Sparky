@@ -49,9 +49,9 @@ class arm:
         self.bottomMottor_90_deg = bottomMottor_90_deg
         self.ccw = ccw
 
-        self.motorKit.servo[self.topMotor_Address].angle = topMotor_0_deg
-        self.motorKit.servo[self.middleMotor_Address].angle = middleMotor_90_deg
-        self.motorKit.servo[self.bottomMotor_Address].angle = bottomMottor_90_deg
+        #self.motorKit.servo[self.topMotor_Address].angle = topMotor_0_deg
+        #self.motorKit.servo[self.middleMotor_Address].angle = middleMotor_90_deg
+        #self.motorKit.servo[self.bottomMotor_Address].angle = bottomMottor_90_deg
 
         self.motorMatrix = np.array([[0, 1, 2], 
                                      [0, 90, 90], 
@@ -79,12 +79,15 @@ class arm:
             time.sleep(motorDelay) 
             self.motorKit.servo[self.motorMatrix[3, motorNumber]].angle = i 
 
-        print(finalRealAngle)
         self.motorKit.servo[self.motorMatrix[3, motorNumber]].angle = finalRealAngle
         time.sleep(.1)
         self.motorKit.servo[self.motorMatrix[3, motorNumber]].angle = finalRealAngle
         self.motorMatrix[2, motorNumber] = finalRealAngle
         time.sleep(.5)
+        
+        print(motorNumber)
+        print(self.motorMatrix)
+        print("-----------------")
 
     def generateSyncThreads(self, motor_data: Dict[int, MotorData]):
             threads = []
