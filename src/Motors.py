@@ -7,9 +7,10 @@ import time
 import threading
 from typing import Dict
 import numpy as np 
+import heapq
 
 # Control dictionary for the motors
-class MotorData:
+class MotorData_Base:
     def __init__(self, motor_speed: int, target_angle: int):
         self.motor_speed = motor_speed
         self.target_angle = target_angle
@@ -89,7 +90,7 @@ class arm:
         print(self.motorMatrix)
         print("-----------------")
 
-    def generateSyncThreads(self, motor_data: Dict[int, MotorData]):
+    def generateSyncThreads(self, motor_data: Dict[int, MotorData_Base]):
             threads = []
 
             for key, value in motor_data.items():
@@ -99,7 +100,30 @@ class arm:
             return threads
 
 
+class Movement():
+    def __init__(self, motordata:  Dict[int, MotorData_Base], armName, delay=0):
+        self.motordata = motordata 
+        self.armName = armName
+        self.delay = delay 
+    
+    def __lt__(self, other): 
+        return self.delay < self.other
+    
+class Frame():
+    def __init__(self):
+        self.listOfMovements  = []
+    
+    def addMovement(self, motorData:  Dict[int, MotorData_Base], armName, delay=0):
+        movement = Movement(motorData, armName, delay)
+        heapq.heappush(self.list_of_movements, movement)
+    
+    def get_movements(self):
+        # This pops but not exactly sure what it is
+        return [heapq.heappop(self.list_of_movements) for _ in range(len(self.list_of_movements))]
+
+        
+
 class SparkySkeleton():
     def __init__(self, topLeftArm: arm, topRightArm:arm, bottomLeftArm: arm, bottomRightArm: arm):
         self.armList = [topLeftArm, topRightArm, bottomLeftArm, bottomRightArm]
-    
+        self.Frames; 

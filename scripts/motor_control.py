@@ -5,6 +5,7 @@
 # ================== STANDARD LIBRARY IMPORTS ==================
 import time
 import threading
+import keyboard # not in req just for testing
 
 # ================== THIRD-PARTY LIBRARY IMPORTS ==================
 import board
@@ -14,8 +15,12 @@ from adafruit_servokit import ServoKit
 import adafruit_pca9685
 
 # ================== LOCAL MODULE IMPORTS ==================
-from src.Motors import arm 
 
+import sys
+sys.path.append('/home/rpirobot/Desktop/Main/Sparky/src/Motors.py')  
+
+from src.Motors import arm 
+from src.Motors import MotorData 
 
 ################################################################################ 
 #                              INITIALIZATIONS                                 #  
@@ -75,111 +80,101 @@ def AllMotorTest():
     topLeftArm.moveMotor(0, 0)
 
 
+def threadProccessing(all_threads): 
+    all_threads = [item for sublist in all_threads for item in sublist]
+    # Use thread pools in the future this is a dumb way to handle this 
+
+    for thread in all_threads:
+        thread.start()
+
+    for thread in all_threads:
+        thread.join()
+
 ################################################################################ 
 #                              STANDING UP                                     #
 ################################################################################ 
 
-thread1 = threading.Thread(target=topLeftArm.moveMotor, args=(0, 10))
-thread2 = threading.Thread(target=topRightArm.moveMotor, args=(0, 10))
-thread3 = threading.Thread(target=bottomRightArm.moveMotor, args=(0, 10))
-thread4 = threading.Thread(target=bottomLeftArm.moveMotor, args=(0, 10))
+# Engage Arms 
+motor_data = {
+    0: MotorData(motor_speed=0.02, target_angle=10),
+}
 
-thread1.start()
-thread2.start()
-thread3.start()
-thread4.start()
+all_threads = []
 
-thread1.join()
-thread2.join()
-thread3.join()
-thread4.join()
+all_threads.append(topLeftArm.generateSyncThreads(motor_data))
+all_threads.append(topRightArm.generateSyncThreads(motor_data))
+all_threads.append(bottomRightArm.generateSyncThreads(motor_data))
+all_threads.append(bottomLeftArm.generateSyncThreads(motor_data))
 
-# Create threads
-thread1 = threading.Thread(target=topLeftArm.moveMotor, args=(1, -40))
-thread2 = threading.Thread(target=topLeftArm.moveMotor, args=(2, 180))
+threadProccessing(all_threads)
 
-thread3 = threading.Thread(target=topRightArm.moveMotor, args=(1, -40))
-thread4 = threading.Thread(target=topRightArm.moveMotor, args=(2, 180))
+# Stand up
+motor_data = {
+    1: MotorData(motor_speed=0.02, target_angle=-40),
+    2: MotorData(motor_speed=0.02, target_angle=180)
+}
 
-thread5 = threading.Thread(target=bottomRightArm.moveMotor, args=(1, -40))
-thread6 = threading.Thread(target=bottomRightArm.moveMotor, args=(2, 180))
+all_threads = []
+all_threads.append(topLeftArm.generateSyncThreads(motor_data))
+all_threads.append(topRightArm.generateSyncThreads(motor_data))
+all_threads.append(bottomRightArm.generateSyncThreads(motor_data))
+all_threads.append(bottomLeftArm.generateSyncThreads(motor_data))
 
-thread7 = threading.Thread(target=bottomLeftArm.moveMotor, args=(1, -40))
-thread8 = threading.Thread(target=bottomLeftArm.moveMotor, args=(2, 180))
+threadProccessing(all_threads)
 
-# Start threads
+# One leg up 
+input("Press Enter to continue...")
 
-thread5.start()
-thread6.start()
-thread7.start()
-thread8.start()
-thread1.start()
-thread2.start()
-thread3.start()
-thread4.start()
+motor_data = {
+    1: MotorData(motor_speed=0.02, target_angle=-18),
+    2: MotorData(motor_speed=0.02, target_angle=212)
+}
+all_threads = []
+all_threads.append(topLeftArm.generateSyncThreads(motor_data))
+threadProccessing(all_threads)
 
+# Move forward again 
+input("Press Enter to continue...")
 
+motor_data = {
+    1: MotorData(motor_speed=0.02, target_angle=-15),
+    2: MotorData(motor_speed=0.02, target_angle=170)
+}
+all_threads = []
+all_threads.append(topLeftArm.generateSyncThreads(motor_data))
+threadProccessing(all_threads)
 
-# Wait for both threads to complete
-thread1.join()
-thread2.join()
-thread3.join()
-thread4.join()
-thread5.join()
-thread6.join()
-thread7.join()
-thread8.join()
+# Leg down 
+input("Press Enter to continue...")
 
-time.sleep(4)
-thread1 = threading.Thread(target=topLeftArm.moveMotor, args=(1, 90))
-thread2 = threading.Thread(target=topLeftArm.moveMotor, args=(2, 90))
-
-thread3 = threading.Thread(target=topRightArm.moveMotor, args=(1, 90))
-thread4 = threading.Thread(target=topRightArm.moveMotor, args=(2, 90))
-
-thread5 = threading.Thread(target=bottomRightArm.moveMotor, args=(1, 90))
-thread6 = threading.Thread(target=bottomRightArm.moveMotor, args=(2, 90))
-
-thread7 = threading.Thread(target=bottomLeftArm.moveMotor, args=(1, 90))
-thread8 = threading.Thread(target=bottomLeftArm.moveMotor, args=(2, 90))
-
-# Start threads
-
-thread5.start()
-thread6.start()
-thread7.start()
-thread8.start()
-
-time.sleep(.5)
-thread1.start()
-thread2.start()
-thread3.start()
-thread4.start()
-
-# Wait for both threads to complete
-thread1.join()
-thread2.join()
-thread3.join()
-thread4.join()
-thread5.join()
-thread6.join()
-thread7.join()
-thread8.join()
+motor_data = {
+    1: MotorData(motor_speed=0.02, target_angle=25),
+    2: MotorData(motor_speed=0.02, target_angle=110)
+}
+all_threads = []
+all_threads.append(topLeftArm.generateSyncThreads(motor_data))
+threadProccessing(all_threads)
 
 
+#Sitdown 
 
+input("Press Enter to continue...")
 
-thread1 = threading.Thread(target=topLeftArm.moveMotor, args=(0, 0))
-thread2 = threading.Thread(target=topRightArm.moveMotor, args=(0, 0))
-thread3 = threading.Thread(target=bottomRightArm.moveMotor, args=(0, 0))
-thread4 = threading.Thread(target=bottomLeftArm.moveMotor, args=(0, 0))
+motor_data = {
+    1: MotorData(motor_speed=0.02, target_angle=90),
+    2: MotorData(motor_speed=0.05, target_angle=90)
+}
 
-thread1.start()
-thread2.start()
-thread3.start()
-thread4.start()
+all_threads = []
+all_threads.append(topLeftArm.generateSyncThreads(motor_data))
+all_threads.append(topRightArm.generateSyncThreads(motor_data))
 
-thread1.join()
-thread2.join()
-thread3.join()
-thread4.join()
+threadProccessing(all_threads)
+
+time.sleep(1)
+all_threads = []
+all_threads.append(bottomRightArm.generateSyncThreads(motor_data))
+all_threads.append(bottomLeftArm.generateSyncThreads(motor_data))
+
+threadProccessing(all_threads)
+
