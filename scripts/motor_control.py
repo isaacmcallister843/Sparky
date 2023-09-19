@@ -155,9 +155,7 @@ all_threads = []
 all_threads.append(topLeftArm.generateSyncThreads(motor_data))
 threadProccessing(all_threads)
 
-
-#Sitdown 
-
+# Sitdown 
 input("Press Enter to continue...")
 
 motor_data = {
