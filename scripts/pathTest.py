@@ -68,7 +68,7 @@ def threadProccessing(all_threads):
 
 # Engage Arms 
 motor_data = {
-    0: MotorData_Base(motor_speed=0.02, target_angle=10),
+    0: MotorData_Base(motor_speed=0.02, target_angle=8),
 }
 
 all_threads = []
@@ -99,22 +99,36 @@ input("Press Enter to continue...")
 ## read data
 
 # Step 1: Open the file in read mode
-array_loaded = np.load('/home/rpirobot/Desktop/Main/Sparky/testData/q_array_final.npy')
+WalkCycle_1 = np.load('/home/rpirobot/Desktop/Main/Sparky/testData/Walk_Cycle_Sync_1.npy')
+WalkCycle_2 = np.load('/home/rpirobot/Desktop/Main/Sparky/testData/Walk_Cycle_Sync_2.npy')
 
-
-for i in range(0, array_loaded.shape[0]-1): 
-    q1 = array_loaded[:, 0][i]
-    q2 = array_loaded[:, 1][i] 
+for i in range(0, WalkCycle_1.shape[0]-1): 
+    q1 = WalkCycle_1[:, 0][i]
+    q2 = WalkCycle_1[:, 1][i] 
     print(q1)
     print(q2)
+    print("1 --------")
     topLeftArm.moveMotor(1, q1)
     topLeftArm.moveMotor(2, q2)
-    input("Press Enter to continue...")
-    time.sleep(.1)
+    bottomRightArm.moveMotor(1, q1)
+    bottomRightArm.moveMotor(2, q2)
+
+    q1 = WalkCycle_2[:, 0][i]
+    q2 = WalkCycle_2[:, 1][i] 
+
+    print(q1)
+    print(q2)
+    print("2 --------")
+    topRightArm.moveMotor(1, q1)
+    topRightArm.moveMotor(2, q2)
+    bottomLeftArm.moveMotor(1, q1)
+    bottomLeftArm.moveMotor(2, q2)
+
+    time.sleep(.15)
 
 input("Press Enter to continue...")
 
-# Sit down 
+#Sit down 
 motor_data = {
     1: MotorData_Base(motor_speed=0.02, target_angle=90),
     2: MotorData_Base(motor_speed=0.05, target_angle=90)

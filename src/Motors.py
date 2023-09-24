@@ -64,7 +64,6 @@ class arm:
     def moveMotor(self, motorNumber, targetAngle, motorDelay = .02): 
         startingPos = self.motorMatrix[1, motorNumber]
         targetPos = targetAngle
-        self.motorMatrix[1, motorNumber] = targetAngle
 
         # Check if we need to count up or down 
         if startingPos > targetAngle:
@@ -76,12 +75,16 @@ class arm:
         angleChange = startingPos - targetPos
         finalRealAngle = startingRealAngle + angleChange * self.ccw
 
-        self.motorKit.servo[self.motorMatrix[3, motorNumber]].angle = finalRealAngle
-        self.motorMatrix[2, motorNumber] = finalRealAngle
+        try:
+            self.motorKit.servo[self.motorMatrix[3, motorNumber]].angle = finalRealAngle
+            self.motorMatrix[2, motorNumber] = finalRealAngle
+            self.motorMatrix[1, motorNumber] = targetAngle
+        except ValueError: 
+            print("Failed to move motor")
         
-        print(motorNumber)
-        print(self.motorMatrix)
-        print("-----------------")
+        # print(motorNumber)
+        # print(self.motorMatrix)
+        # print("-----------------")
 
     def generateSyncThreads(self, motor_data: Dict[int, MotorData_Base]):
             threads = []
