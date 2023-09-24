@@ -76,15 +76,8 @@ class arm:
         angleChange = startingPos - targetPos
         finalRealAngle = startingRealAngle + angleChange * self.ccw
 
-        for i in range(startingRealAngle, finalRealAngle, it*self.ccw):
-            time.sleep(motorDelay) 
-            self.motorKit.servo[self.motorMatrix[3, motorNumber]].angle = i 
-
-        self.motorKit.servo[self.motorMatrix[3, motorNumber]].angle = finalRealAngle
-        time.sleep(.1)
         self.motorKit.servo[self.motorMatrix[3, motorNumber]].angle = finalRealAngle
         self.motorMatrix[2, motorNumber] = finalRealAngle
-        time.sleep(.5)
         
         print(motorNumber)
         print(self.motorMatrix)

@@ -99,30 +99,22 @@ input("Press Enter to continue...")
 ## read data
 
 # Step 1: Open the file in read mode
-with open('/home/rpirobot/Desktop/Main/Sparky/testData/output.csv', 'r') as file:
-    # Step 2: Read the contents of the file
-    lines = file.readlines()
+array_loaded = np.load('/home/rpirobot/Desktop/Main/Sparky/testData/q_array_final.npy')
 
 
-values = lines[0].strip().split(',')
-print("-----------")
-print(lines)
-print("-----------")
-
-print(values)
-print("-----------")
-
-for i in range(0, 49): 
-    input("Press Enter to continue...")
-    q1 = int(values[i])
-    q2 = 140 
+for i in range(0, array_loaded.shape[0]-1): 
+    q1 = array_loaded[:, 0][i]
+    q2 = array_loaded[:, 1][i] 
     print(q1)
+    print(q2)
     topLeftArm.moveMotor(1, q1)
     topLeftArm.moveMotor(2, q2)
-
+    input("Press Enter to continue...")
+    time.sleep(.1)
 
 input("Press Enter to continue...")
 
+# Sit down 
 motor_data = {
     1: MotorData_Base(motor_speed=0.02, target_angle=90),
     2: MotorData_Base(motor_speed=0.05, target_angle=90)
